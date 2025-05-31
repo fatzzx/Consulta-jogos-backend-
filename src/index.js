@@ -5,6 +5,8 @@ import cors from 'cors';
 import rawgRoutes from './routes/rawg.route.js'; 
 import swaggerUi from 'swagger-ui-express';
 import swaggerSpec from './docs/swagger.js';
+import favoriteRoutes from './routes/favorite.route.js';
+
 
 import userRoutes from './routes/user.route.js';
 import exampleRoutes from './routes/example.route.js';
@@ -22,6 +24,8 @@ app.use('/api/users', userRoutes);
 app.use('/api/example', exampleRoutes);
 app.use('/api/rawg', rawgRoutes); 
 app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+app.use('/api/favorites', favoriteRoutes);
+
 
 app.get('/', (req, res) => {
   res.send('API Consulta-Jogos está no ar! Veja a documentação em /docs');

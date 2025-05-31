@@ -2,6 +2,9 @@ import express from 'express';
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 import cors from 'cors';
+import rawgRoutes from './routes/rawg.route.js'; 
+import swaggerUi from 'swagger-ui-express';
+import swaggerSpec from './docs/swagger.js';
 
 import userRoutes from './routes/user.route.js';
 import exampleRoutes from './routes/example.route.js';
@@ -14,9 +17,16 @@ const PORT = process.env.PORT || 5000;
 app.use(cors());
 app.use(express.json());
 
-// Rotas
+
 app.use('/api/users', userRoutes);
 app.use('/api/example', exampleRoutes);
+app.use('/api/rawg', rawgRoutes); 
+app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+
+app.get('/', (req, res) => {
+  res.send('API Consulta-Jogos está no ar! Veja a documentação em /docs');
+});
+
 
 mongoose.connect(process.env.MONGO_URI)
   .then(() => {

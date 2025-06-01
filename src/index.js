@@ -1,19 +1,9 @@
-import express from 'express';
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
-import cors from 'cors';
-import rawgRoutes from './routes/rawg.route.js'; 
-import swaggerUi from 'swagger-ui-express';
-import swaggerSpec from './docs/swagger.js';
-import favoriteRoutes from './routes/favorite.route.js';
-
-
-import userRoutes from './routes/user.route.js';
-import exampleRoutes from './routes/example.route.js';
+import app from './app.js';
 
 dotenv.config();
 
-const app = express();
 const PORT = process.env.PORT || 5000;
 
 // Configuração do CORS

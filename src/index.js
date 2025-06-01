@@ -16,13 +16,8 @@ dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-const corsOptions = {
-  origin: ['https://consulta-nutricional.vercel.app'],
-  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
-  optionsSuccessStatus: 204
-};
 
-app.use(cors(corsOptions));
+app.use(cors());
 
 app.use(express.json());
 

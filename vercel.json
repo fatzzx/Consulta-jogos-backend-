@@ -4,7 +4,7 @@
   "builds": [{ "src": "src/index.js", "use": "@vercel/node" }],
    "headers": [
     {
-      "source": "/api/(.*)",
+      "source": "/(.*)",
       "headers": [
         { "key": "Access-Control-Allow-Origin", "value": "*" },
         { "key": "Access-Control-Allow-Methods", "value": "GET, POST, OPTIONS" },

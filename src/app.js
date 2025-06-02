@@ -6,6 +6,8 @@ import exampleRoutes from './routes/example.route.js';
 import rawgRoutes from './routes/rawg.route.js';
 import swaggerUi from 'swagger-ui-express';
 import swaggerSpec from './docs/swagger.js';
+import favoriteRoutes from './routes/favorite.routes.js';
+
 
 dotenv.config();
 
@@ -35,6 +37,8 @@ app.use('/api/users', userRoutes);
 app.use('/api/example', exampleRoutes);
 app.use('/api/rawg', rawgRoutes);
 app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+app.use('/api/favorites', favoriteRoutes);
+
 
 app.get('/', (req, res) => {
   res.send('API Consulta Jogos está operacional. Consulte /docs para a documentação.');

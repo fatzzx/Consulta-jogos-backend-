@@ -46,7 +46,7 @@ app.use(express.json());
 app.use('/api/users', userRoutes);
 app.use('/api/example', exampleRoutes);
 app.use('/api/rawg', rawgRoutes);
-app.use('/api/favorites', favoriteRoute); 
+app.use('/api/favorites', favoriteRoutes);
 app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 app.get('/', (req, res) => {

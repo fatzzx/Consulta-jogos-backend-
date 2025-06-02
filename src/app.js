@@ -1,13 +1,14 @@
 import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
+
 import userRoutes from './routes/user.route.js';
 import exampleRoutes from './routes/example.route.js';
 import rawgRoutes from './routes/rawg.route.js';
-import swaggerUi from 'swagger-ui-express';
-import swaggerSpec from './docs/swagger.js';
 import favoriteRoutes from './routes/favorite.routes.js';
 
+import swaggerUi from 'swagger-ui-express';
+import swaggerSpec from './docs/swagger.js';
 
 dotenv.config();
 
@@ -26,19 +27,27 @@ app.use(cors({
       callback(new Error('Not allowed by CORS'));
     }
   },
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS', 'PATCH'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
   credentials: true,
+  optionsSuccessStatus: 200 
 }));
 
-// Body parser
+app.options("*", (req, res) => {
+  res.setHeader("Access-Control-Allow-Origin", req.headers.origin || "*");
+  res.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS, PATCH");
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
+  res.setHeader("Access-Control-Allow-Credentials", "true");
+  return res.sendStatus(200);
+});
+
 app.use(express.json());
 
-// Rotas
 app.use('/api/users', userRoutes);
 app.use('/api/example', exampleRoutes);
 app.use('/api/rawg', rawgRoutes);
+app.use('/api/favorites', favoriteRoutes); // ✅ sua rota protegida
 app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
-app.use('/api/favorites', favoriteRoutes);
-
 
 app.get('/', (req, res) => {
   res.send('API Consulta Jogos está operacional. Consulte /docs para a documentação.');

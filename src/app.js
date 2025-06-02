@@ -57,4 +57,8 @@ app.use('/api/example', exampleRoutes);
 app.use('/api/rawg', rawgRoutes);
 app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
+app.get('/', (req, res) => {
+  res.send('API Consulta Jogos está operacional. Consulte /docs para a documentação.');
+});
+
 export default app;

@@ -5,6 +5,7 @@ export const register = async (req, res) => {
     const user = await registerUser(req.body);
     res.status(201).json(user);
   } catch (err) {
+    console.error('Erro Detalhado no Registo:', err);
     res.status(400).json({ error: err.message });
   }
 };

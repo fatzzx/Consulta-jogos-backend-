@@ -5,7 +5,7 @@ import dotenv from 'dotenv';
 import userRoutes from './routes/user.route.js';
 import exampleRoutes from './routes/example.route.js';
 import rawgRoutes from './routes/rawg.route.js';
-import favoriteRoutes from './routes/favorite.routes.js';
+import favoriteRoutes from './routes/favorite.route.js';
 
 import swaggerUi from 'swagger-ui-express';
 import swaggerSpec from './docs/swagger.js';
@@ -46,7 +46,7 @@ app.use(express.json());
 app.use('/api/users', userRoutes);
 app.use('/api/example', exampleRoutes);
 app.use('/api/rawg', rawgRoutes);
-app.use('/api/favorites', favoriteRoutes); // ✅ sua rota protegida
+app.use('/api/favorites', favoriteRoute); 
 app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 app.get('/', (req, res) => {

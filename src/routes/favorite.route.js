@@ -13,7 +13,7 @@ const router = express.Router();
 
 /**
  * @swagger
- * /api/favorites:
+ * /favorites:
  *   post:
  *     summary: Adiciona um jogo aos favoritos
  *     tags: [Favoritos]
@@ -31,24 +31,19 @@ const router = express.Router();
  *             properties:
  *               gameId:
  *                 type: string
- *                 example: "1234"
  *               title:
  *                 type: string
- *                 example: "The Witcher 3"
  *               cover:
  *                 type: string
- *                 example: "https://example.com/capa.jpg"
  *     responses:
  *       201:
- *         description: Jogo favoritado com sucesso
- *       400:
- *         description: Dados inválidos
+ *         description: Jogo favoritado
  */
 router.post('/', authenticate, addFavorite);
 
 /**
  * @swagger
- * /api/favorites:
+ * /favorites:
  *   get:
  *     summary: Lista os favoritos do usuário
  *     tags: [Favoritos]
@@ -57,27 +52,12 @@ router.post('/', authenticate, addFavorite);
  *     responses:
  *       200:
  *         description: Lista de jogos favoritos
- *         content:
- *           application/json:
- *             schema:
- *               type: array
- *               items:
- *                 type: object
- *                 properties:
- *                   _id:
- *                     type: string
- *                   gameId:
- *                     type: string
- *                   title:
- *                     type: string
- *                   cover:
- *                     type: string
  */
 router.get('/', authenticate, getFavorites);
 
 /**
  * @swagger
- * /api/favorites/{id}:
+ * /favorites/{id}:
  *   delete:
  *     summary: Remove um favorito pelo ID
  *     tags: [Favoritos]
@@ -92,9 +72,7 @@ router.get('/', authenticate, getFavorites);
  *         description: ID do favorito
  *     responses:
  *       200:
- *         description: Favorito removido com sucesso
- *       404:
- *         description: Favorito não encontrado
+ *         description: Favorito removido
  */
 router.delete('/:id', authenticate, deleteFavorite);
 

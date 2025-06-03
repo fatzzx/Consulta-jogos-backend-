@@ -58,7 +58,7 @@ app.get('/docs.json', (req, res) => {
 
 
 app.get('/docs', (req, res) => {
-  const filePath = path.join(__dirname, 'swagger.html'); // Arquivo está na raiz
+  const filePath = path.join(__dirname, '..', 'swagger.html'); // corrigido para subir um nível
   try {
     const html = fs.readFileSync(filePath, 'utf-8');
     res.send(html);
@@ -79,6 +79,7 @@ app.use('/api/gamePrice', gamePriceRoutes);
 app.get('/', (req, res) => {
   res.send('API Consulta Jogos está operacional. Consulte /docs para a documentação.');
 });
+
 
 console.log('\n=== ROTAS REGISTRADAS PELO EXPRESS ===');
 app._router.stack.forEach((layer) => {

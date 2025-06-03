@@ -44,17 +44,22 @@ app.options("*", (req, res) => {
 
 app.use(express.json());
 
+
 app.get('/docs.json', (req, res) => {
   res.setHeader('Content-Type', 'application/json');
   res.send(swaggerSpec);
 });
 
+
 app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec, {
   explorer: true,
   swaggerOptions: {
     url: '/docs.json'
-  }
+  },
+  customCssUrl: 'https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/4.18.2/swagger-ui.min.css',
+  customJs: 'https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/4.18.2/swagger-ui-bundle.min.js',
 }));
+
 
 app.use('/api/users', userRoutes);
 app.use('/api/example', exampleRoutes);

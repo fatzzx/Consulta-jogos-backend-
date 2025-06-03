@@ -13,6 +13,10 @@ const options = {
         url: 'http://localhost:5000',
         description: 'Servidor local',
       },
+      {
+        url: 'https://consulta-jogos-backend.vercel.app', // ajuste conforme necessário
+        description: 'Servidor Vercel',
+      },
     ],
     components: {
       securitySchemes: {
@@ -29,7 +33,8 @@ const options = {
       },
     ],
   },
-apis: ['./src/routes/favorite.route.js', './src/routes/user.route.js'],
+  
+  apis: ['./src/routes/*.js'], // ou apenas favorite.route.js, user.route.js etc.
 };
 
 const swaggerSpec = swaggerJSDoc(options);

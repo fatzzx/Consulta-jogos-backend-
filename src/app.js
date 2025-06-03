@@ -44,9 +44,17 @@ app.options("*", (req, res) => {
 
 app.use(express.json());
 
+app.get('/docs.json', (req, res) => {
+  res.setHeader('Content-Type', 'application/json');
+  res.send(swaggerSpec);
+});
 
-app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
-
+app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec, {
+  explorer: true,
+  swaggerOptions: {
+    url: '/docs.json'
+  }
+}));
 
 app.use('/api/users', userRoutes);
 app.use('/api/example', exampleRoutes);
@@ -54,11 +62,12 @@ app.use('/api/rawg', rawgRoutes);
 app.use('/api/favorites', favoriteRoutes);
 app.use('/api/gamePrice', gamePriceRoutes);
 
+
 app.get('/', (req, res) => {
   res.send('API Consulta Jogos está operacional. Consulte /docs para a documentação.');
 });
 
-// 🖨️ Log de rotas
+
 console.log('\n=== ROTAS REGISTRADAS PELO EXPRESS ===');
 app._router.stack.forEach((layer) => {
   if (layer.route && layer.route.path) {

@@ -2,15 +2,14 @@ import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
 
+import swaggerUi from 'swagger-ui-express';
+import swaggerSpec from './docs/swagger.js';
 
 import userRoutes from './routes/user.route.js';
 import exampleRoutes from './routes/example.route.js';
 import rawgRoutes from './routes/rawg.route.js';
 import favoriteRoutes from './routes/favorite.route.js';
 import gamePriceRoutes from './routes/gamePrice.route.js';
-
-import swaggerUi from 'swagger-ui-express';
-import swaggerSpec from './docs/swagger.js';
 
 dotenv.config();
 
@@ -45,17 +44,21 @@ app.options("*", (req, res) => {
 
 app.use(express.json());
 
+
+app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+
+
 app.use('/api/users', userRoutes);
 app.use('/api/example', exampleRoutes);
 app.use('/api/rawg', rawgRoutes);
 app.use('/api/favorites', favoriteRoutes);
-app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 app.use('/api/gamePrice', gamePriceRoutes);
 
 app.get('/', (req, res) => {
   res.send('API Consulta Jogos está operacional. Consulte /docs para a documentação.');
 });
 
+// 🖨️ Log de rotas
 console.log('\n=== ROTAS REGISTRADAS PELO EXPRESS ===');
 app._router.stack.forEach((layer) => {
   if (layer.route && layer.route.path) {

@@ -16,10 +16,8 @@ import gamePriceRoutes from './routes/gamePrice.route.js';
 dotenv.config();
 const app = express();
 
-
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-
 
 const allowedOrigins = [
   'http://localhost:5173',
@@ -40,25 +38,26 @@ app.use(cors({
   optionsSuccessStatus: 200 
 }));
 
-app.options("*", (req, res) => {
-  res.setHeader("Access-Control-Allow-Origin", req.headers.origin || "*");
-  res.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS, PATCH");
-  res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
-  res.setHeader("Access-Control-Allow-Credentials", "true");
-  return res.sendStatus(200);
+app.use((req, res, next) => {
+  if (req.method === 'OPTIONS') {
+    res.setHeader("Access-Control-Allow-Origin", req.headers.origin || "*");
+    res.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS, PATCH");
+    res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
+    res.setHeader("Access-Control-Allow-Credentials", "true");
+    return res.sendStatus(200);
+  }
+  next();
 });
 
 app.use(express.json());
-
 
 app.get('/docs.json', (req, res) => {
   res.setHeader('Content-Type', 'application/json');
   res.send(swaggerSpec);
 });
 
-
 app.get('/docs', (req, res) => {
-  const filePath = path.join(__dirname, '..', 'swagger.html'); // corrigido para subir um nível
+  const filePath = path.join(__dirname, '..', 'swagger.html');
   try {
     const html = fs.readFileSync(filePath, 'utf-8');
     res.send(html);
@@ -68,29 +67,27 @@ app.get('/docs', (req, res) => {
   }
 });
 
-
 app.use('/api/users', userRoutes);
 app.use('/api/example', exampleRoutes);
 app.use('/api/rawg', rawgRoutes);
 app.use('/api/favorites', favoriteRoutes);
 app.use('/api/gamePrice', gamePriceRoutes);
 
-
 app.get('/', (req, res) => {
   res.send('API Consulta Jogos está operacional. Consulte /docs para a documentação.');
 });
 
-
-console.log('\n=== ROTAS REGISTRADAS PELO EXPRESS ===');
-app._router.stack.forEach((layer) => {
-  if (layer.route && layer.route.path) {
-    const métodos = Object
-      .keys(layer.route.methods)
-      .map(m => m.toUpperCase())
-      .join(', ');
-    console.log(`${métodos}\t${layer.route.path}`);
-  }
-});
-console.log('======================================\n');
+if (app._router && app._router.stack) {
+  console.log('\n=== ROTAS REGISTRADAS PELO EXPRESS ===');
+  app._router.stack.forEach((layer) => {
+    if (layer.route && layer.route.path) {
+      const métodos = Object.keys(layer.route.methods)
+        .map(m => m.toUpperCase())
+        .join(', ');
+      console.log(`${métodos}\t${layer.route.path}`);
+    }
+  });
+  console.log('======================================\n');
+}
 
 export default app;

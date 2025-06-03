@@ -1,25 +1,14 @@
-import User from '../models/User.js';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
+import User from '../models/User.js';
 
 export const registerUser = async ({ name, email, password }) => {
   const existing = await User.findOne({ email });
-  if (existing) {
-    throw new Error("Este email já está registrado.");
-  }
+  if (existing) throw new Error('Este email já está registrado.');
 
-  const hashed = await bcrypt.hash(password, 10);
-
-  try {
-    const user = new User({ name, email, password: hashed });
-    return await user.save();
-  } catch (err) {
-    if (err.code === 11000 && err.keyPattern?.email) {
-      throw new Error("Este email já está em uso.");
-    } else {
-      throw new Error("Erro ao registrar usuário.");
-    }
-  }
+  const hashedPassword = await bcrypt.hash(password, 10);
+  const user = await User.create({ name, email, password: hashedPassword });
+  return user;
 };
 
 export const loginUser = async ({ email, password }) => {

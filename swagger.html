@@ -2,11 +2,23 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <title>Swagger UI</title>
+    <title>Swagger UI - Consulta Jogos</title>
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/4.18.2/swagger-ui.min.css"
     />
+    <style>
+      body {
+        background-color: #121212;
+        color: #f1f1f1;
+      }
+      .swagger-ui {
+        filter: invert(1) hue-rotate(180deg);
+      }
+      .swagger-ui img, .swagger-ui .topbar-wrapper img {
+        filter: invert(1) hue-rotate(180deg);
+      }
+    </style>
   </head>
   <body>
     <div id="swagger-ui"></div>

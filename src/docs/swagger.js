@@ -1,8 +1,6 @@
 import swaggerJSDoc from 'swagger-jsdoc';
 import path from 'path';
 
-const __dirname = path.resolve();
-
 const options = {
   definition: {
     openapi: '3.0.0',
@@ -17,7 +15,7 @@ const options = {
         description: 'Servidor local',
       },
       {
-        url: 'https://consulta-jogos-backend.vercel.app',
+        url: 'https://consulta-jogos-backend-hnh4.vercel.app',
         description: 'Servidor em produção',
       },
     ],
@@ -36,7 +34,9 @@ const options = {
       },
     ],
   },
-  apis: [path.join(__dirname, 'src/routes/*.js')],
+
+  
+  apis: ['./src/routes/*.js'],
 };
 
 const swaggerSpec = swaggerJSDoc(options);

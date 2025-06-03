@@ -1,4 +1,7 @@
 import swaggerJSDoc from 'swagger-jsdoc';
+import path from 'path';
+
+const __dirname = path.resolve();
 
 const options = {
   definition: {
@@ -14,7 +17,8 @@ const options = {
         description: 'Servidor local',
       },
       {
-        url: 'https://consulta-jogos-backend.vercel.app', 
+        url: 'https://consulta-jogos-backend.vercel.app',
+        description: 'Servidor em produção',
       },
     ],
     components: {
@@ -32,8 +36,7 @@ const options = {
       },
     ],
   },
-  
-  apis: ['./src/routes/*.js'], 
+  apis: [path.join(__dirname, 'src/routes/*.js')],
 };
 
 const swaggerSpec = swaggerJSDoc(options);

@@ -21,7 +21,7 @@ const allowedOrigins = [
 
 app.use(cors({
   origin: function (origin, callback) {
-    if (!origin || allowedOrigins.includes(origin)) {
+    if (!origin || origin.endsWith('.github.dev') || allowedOrigins.includes(origin)) {
       callback(null, true);
     } else {
       callback(new Error('Not allowed by CORS'));
@@ -53,8 +53,6 @@ app.get('/', (req, res) => {
   res.send('API Consulta Jogos está operacional. Consulte /docs para a documentação.');
 });
 
-
-
 console.log('\n=== ROTAS REGISTRADAS PELO EXPRESS ===');
 app._router.stack.forEach((layer) => {
   if (layer.route && layer.route.path) {
@@ -66,6 +64,5 @@ app._router.stack.forEach((layer) => {
   }
 });
 console.log('======================================\n');
-// ———————————————————————————————————————————————————————————
 
 export default app;

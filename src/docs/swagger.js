@@ -6,7 +6,7 @@ const options = {
     info: {
       title: 'Consulta Jogos API',
       version: '1.0.0',
-      description: 'Documentação da API com autenticação e acesso a jogos via RAWG',
+      description: 'Documentação da API com autenticação e jogos',
     },
     servers: [
       {
@@ -34,9 +34,9 @@ const options = {
     ],
   },
 
+  
   apis: ['./src/routes/*.js'],
 };
 
 const swaggerSpec = swaggerJSDoc(options);
-
 export default swaggerSpec;

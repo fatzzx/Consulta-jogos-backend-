@@ -2,10 +2,12 @@ import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
 
+
 import userRoutes from './routes/user.route.js';
 import exampleRoutes from './routes/example.route.js';
 import rawgRoutes from './routes/rawg.route.js';
 import favoriteRoutes from './routes/favorite.route.js';
+import gamePriceRoutes from './routes/gamePrice.route.js';
 
 import swaggerUi from 'swagger-ui-express';
 import swaggerSpec from './docs/swagger.js';
@@ -48,6 +50,7 @@ app.use('/api/example', exampleRoutes);
 app.use('/api/rawg', rawgRoutes);
 app.use('/api/favorites', favoriteRoutes);
 app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+app.use('/api/gamePrice', gamePriceRoutes);
 
 app.get('/', (req, res) => {
   res.send('API Consulta Jogos está operacional. Consulte /docs para a documentação.');

@@ -1,8 +1,10 @@
 import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
+import fs from 'fs';
+import path from 'path';
+import { fileURLToPath } from 'url';
 
-import swaggerUi from 'swagger-ui-express';
 import swaggerSpec from './docs/swagger.js';
 
 import userRoutes from './routes/user.route.js';
@@ -12,8 +14,12 @@ import favoriteRoutes from './routes/favorite.route.js';
 import gamePriceRoutes from './routes/gamePrice.route.js';
 
 dotenv.config();
-
 const app = express();
+
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
 
 const allowedOrigins = [
   'http://localhost:5173',
@@ -51,14 +57,11 @@ app.get('/docs.json', (req, res) => {
 });
 
 
-app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec, {
-  explorer: true,
-  swaggerOptions: {
-    url: '/docs.json'
-  },
-  customCssUrl: 'https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/4.18.2/swagger-ui.min.css',
-  customJs: 'https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/4.18.2/swagger-ui-bundle.min.js',
-}));
+app.get('/docs', (req, res) => {
+  const filePath = path.join(__dirname, 'src', 'docs', 'swagger.html');
+  const html = fs.readFileSync(filePath, 'utf-8');
+  res.send(html);
+});
 
 
 app.use('/api/users', userRoutes);

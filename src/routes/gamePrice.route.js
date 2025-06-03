@@ -3,6 +3,27 @@ import axios from "axios";
 
 const router = express.Router();
 
+/**
+ * @swagger
+ * /api/gamePrice:
+ *   get:
+ *     summary: Busca o preço de um jogo na API externa
+ *     tags: [GamePrice]
+ *     parameters:
+ *       - in: query
+ *         name: name
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: Nome do jogo a ser consultado
+ *     responses:
+ *       200:
+ *         description: Preços encontrados
+ *       400:
+ *         description: Nome do jogo não fornecido
+ *       500:
+ *         description: Erro ao buscar preço
+ */
 router.get("/", async (req, res) => {
   const { name } = req.query;
 

@@ -13,7 +13,7 @@ const router = express.Router();
 
 /**
  * @swagger
- * /favorites:
+ * /api/favorites:
  *   post:
  *     summary: Adiciona um jogo aos favoritos
  *     tags: [Favoritos]
@@ -43,7 +43,7 @@ router.post('/', authenticate, addFavorite);
 
 /**
  * @swagger
- * /favorites:
+ * /api/favorites:
  *   get:
  *     summary: Lista os favoritos do usuário
  *     tags: [Favoritos]
@@ -57,7 +57,7 @@ router.get('/', authenticate, getFavorites);
 
 /**
  * @swagger
- * /favorites/{id}:
+ * /api/favorites/{id}:
  *   delete:
  *     summary: Remove um favorito pelo ID
  *     tags: [Favoritos]

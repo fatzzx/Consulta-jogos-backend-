@@ -7,8 +7,8 @@ import exampleRoutes from './routes/example.route.js';
 import rawgRoutes from './routes/rawg.route.js';
 import favoriteRoutes from './routes/favorite.route.js';
 
-//import swaggerUi from 'swagger-ui-express';
-//import swaggerSpec from './docs/swagger.js';
+import swaggerUi from 'swagger-ui-express';
+import swaggerSpec from './docs/swagger.js';
 
 dotenv.config();
 
@@ -47,10 +47,25 @@ app.use('/api/users', userRoutes);
 app.use('/api/example', exampleRoutes);
 app.use('/api/rawg', rawgRoutes);
 app.use('/api/favorites', favoriteRoutes);
-//app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 app.get('/', (req, res) => {
   res.send('API Consulta Jogos está operacional. Consulte /docs para a documentação.');
 });
+
+
+
+console.log('\n=== ROTAS REGISTRADAS PELO EXPRESS ===');
+app._router.stack.forEach((layer) => {
+  if (layer.route && layer.route.path) {
+    const métodos = Object
+      .keys(layer.route.methods)
+      .map(m => m.toUpperCase())
+      .join(', ');
+    console.log(`${métodos}\t${layer.route.path}`);
+  }
+});
+console.log('======================================\n');
+// ———————————————————————————————————————————————————————————
 
 export default app;

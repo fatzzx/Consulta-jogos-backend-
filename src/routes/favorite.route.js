@@ -31,13 +31,18 @@ const router = express.Router();
  *             properties:
  *               gameId:
  *                 type: string
+ *                 example: "1234"
  *               title:
  *                 type: string
+ *                 example: "The Witcher 3"
  *               cover:
  *                 type: string
+ *                 example: "https://example.com/capa.jpg"
  *     responses:
  *       201:
- *         description: Jogo favoritado
+ *         description: Jogo favoritado com sucesso
+ *       400:
+ *         description: Dados inválidos
  */
 router.post('/', authenticate, addFavorite);
 
@@ -52,6 +57,21 @@ router.post('/', authenticate, addFavorite);
  *     responses:
  *       200:
  *         description: Lista de jogos favoritos
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 type: object
+ *                 properties:
+ *                   _id:
+ *                     type: string
+ *                   gameId:
+ *                     type: string
+ *                   title:
+ *                     type: string
+ *                   cover:
+ *                     type: string
  */
 router.get('/', authenticate, getFavorites);
 
@@ -66,13 +86,15 @@ router.get('/', authenticate, getFavorites);
  *     parameters:
  *       - in: path
  *         name: id
+ *         required: true
  *         schema:
  *           type: string
- *         required: true
  *         description: ID do favorito
  *     responses:
  *       200:
- *         description: Favorito removido
+ *         description: Favorito removido com sucesso
+ *       404:
+ *         description: Favorito não encontrado
  */
 router.delete('/:id', authenticate, deleteFavorite);
 

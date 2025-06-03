@@ -14,8 +14,7 @@ const options = {
         description: 'Servidor local',
       },
       {
-        url: 'https://consulta-jogos-backend.vercel.app', // ajuste conforme necessário
-        description: 'Servidor Vercel',
+        url: 'https://consulta-jogos-backend.vercel.app', 
       },
     ],
     components: {
@@ -34,7 +33,7 @@ const options = {
     ],
   },
   
-  apis: ['./src/routes/*.js'], // ou apenas favorite.route.js, user.route.js etc.
+  apis: ['./src/routes/*.js'], 
 };
 
 const swaggerSpec = swaggerJSDoc(options);

@@ -58,9 +58,14 @@ app.get('/docs.json', (req, res) => {
 
 
 app.get('/docs', (req, res) => {
-  const filePath = path.join(__dirname, 'src', 'docs', 'swagger.html');
-  const html = fs.readFileSync(filePath, 'utf-8');
-  res.send(html);
+  const filePath = path.join(__dirname, 'swagger.html'); // Arquivo está na raiz
+  try {
+    const html = fs.readFileSync(filePath, 'utf-8');
+    res.send(html);
+  } catch (err) {
+    console.error('Erro ao carregar swagger.html:', err);
+    res.status(500).send('Erro ao carregar documentação Swagger');
+  }
 });
 
 
@@ -74,7 +79,6 @@ app.use('/api/gamePrice', gamePriceRoutes);
 app.get('/', (req, res) => {
   res.send('API Consulta Jogos está operacional. Consulte /docs para a documentação.');
 });
-
 
 console.log('\n=== ROTAS REGISTRADAS PELO EXPRESS ===');
 app._router.stack.forEach((layer) => {

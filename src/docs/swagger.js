@@ -6,7 +6,7 @@ const options = {
     info: {
       title: 'Consulta Jogos API',
       version: '1.0.0',
-      description: 'Documentação da API com autenticação e jogos',
+      description: 'Documentação da API com autenticação e acesso a jogos via RAWG',
     },
     servers: [
       {
@@ -34,7 +34,6 @@ const options = {
     ],
   },
 
-  
   apis: ['./src/routes/*.js'],
 };
 

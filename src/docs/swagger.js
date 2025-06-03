@@ -29,7 +29,7 @@ const options = {
       },
     ],
   },
-  apis: ['./src/routes/*.js'], // arquivos com comentários Swagger
+apis: ['./src/routes/favorite.route.js', './src/routes/user.route.js'],
 };
 
 const swaggerSpec = swaggerJSDoc(options);

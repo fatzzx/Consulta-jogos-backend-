@@ -32,14 +32,44 @@ router.get("/", async (req, res) => {
   }
 
   try {
-    const response = await axios.get(
-      `https://api.ship.shark/prices?name=${encodeURIComponent(name)}`
+    const searchRes = await axios.get("https://www.cheapshark.com/api/1.0/games", {
+      params: {
+        title: name,
+        limit: 1
+      }
+    });
+
+    const games = searchRes.data;
+
+    if (!games || games.length === 0) {
+      return res.status(404).json({ error: "Jogo não encontrado" });
+    }
+
+    const gameID = games[0].gameID;
+
+    const infoRes = await axios.get("https://www.cheapshark.com/api/1.0/games", {
+      params: { id: gameID }
+    });
+
+    const gameInfo = infoRes.data;
+
+    const bestDeal = gameInfo.deals.reduce((lowest, current) =>
+      parseFloat(current.price) < parseFloat(lowest.price) ? current : lowest
     );
 
-    res.json(response.data);
+    const storeMapRes = await axios.get("https://www.cheapshark.com/api/1.0/stores");
+    const storeMap = storeMapRes.data;
+
+    const store = storeMap.find((s) => s.storeID === bestDeal.storeID);
+
+    res.json({
+      isFree: parseFloat(bestDeal.price) === 0,
+      price: `$${parseFloat(bestDeal.price).toFixed(2)}`,
+      store: store ? store.storeName : `Loja ${bestDeal.storeID}`
+    });
   } catch (err) {
     console.error("Erro ao buscar preço:", err.message);
-    res.status(500).json({ error: "Erro ao buscar preço" });
+    res.status(500).json({ isFree: true, error: "Erro ao buscar preço" });
   }
 });
 

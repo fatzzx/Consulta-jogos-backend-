@@ -53,6 +53,15 @@ router.get("/", async (req, res) => {
 
     const gameInfo = infoRes.data;
 
+    if (!gameInfo.deals || gameInfo.deals.length === 0) {
+      return res.status(404).json({
+        isFree: false,
+        price: null,
+        store: null,
+        error: "Nenhuma oferta disponível para este jogo"
+      });
+    }
+
     const bestDeal = gameInfo.deals.reduce((lowest, current) =>
       parseFloat(current.price) < parseFloat(lowest.price) ? current : lowest
     );

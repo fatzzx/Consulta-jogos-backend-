@@ -3,27 +3,6 @@ import axios from "axios";
 
 const router = express.Router();
 
-/**
- * @swagger
- * /api/gamePrice:
- *   get:
- *     summary: Busca o preço de um jogo na API externa
- *     tags: [GamePrice]
- *     parameters:
- *       - in: query
- *         name: name
- *         schema:
- *           type: string
- *         required: true
- *         description: Nome do jogo a ser consultado
- *     responses:
- *       200:
- *         description: Preços encontrados
- *       400:
- *         description: Nome do jogo não fornecido
- *       500:
- *         description: Erro ao buscar preço
- */
 router.get("/", async (req, res) => {
   const { name } = req.query;
 
@@ -31,7 +10,6 @@ router.get("/", async (req, res) => {
     return res.status(400).json({ error: "Nome do jogo não fornecido" });
   }
 
-  // Limpeza do nome no backend
   const cleanedName = name
     .toLowerCase()
     .replace(/[^a-z0-9 ]/gi, "")
@@ -47,13 +25,11 @@ router.get("/", async (req, res) => {
     });
 
     const games = searchRes.data;
-
     if (!games || games.length === 0) {
       return res.status(404).json({ error: "Jogo não encontrado" });
     }
 
     const gameID = games[0].gameID;
-
     const infoRes = await axios.get("https://www.cheapshark.com/api/1.0/games", {
       params: { id: gameID }
     });
@@ -61,27 +37,39 @@ router.get("/", async (req, res) => {
     const gameInfo = infoRes.data;
 
     if (!gameInfo.deals || gameInfo.deals.length === 0) {
-      return res.status(404).json({
+      return res.json({
         isFree: false,
-        price: null,
-        store: null,
-        error: "Nenhuma oferta disponível para este jogo"
+        offers: [],
+        lowestHistoricalPrice: null
       });
     }
 
-    const bestDeal = gameInfo.deals.reduce((lowest, current) =>
-      parseFloat(current.price) < parseFloat(lowest.price) ? current : lowest
-    );
-
     const storeMapRes = await axios.get("https://www.cheapshark.com/api/1.0/stores");
     const storeMap = storeMapRes.data;
+    const storeName = (id) => {
+      const store = storeMap.find((s) => s.storeID === id);
+      return store ? store.storeName : `Loja ${id}`;
+    };
 
-    const store = storeMap.find((s) => s.storeID === bestDeal.storeID);
+    const offers = gameInfo.deals.map((deal) => ({
+      store: storeName(deal.storeID),
+      currentPrice: parseFloat(deal.price),
+      originalPrice: parseFloat(deal.retailPrice),
+      discount: `${Math.round((1 - deal.price / deal.retailPrice) * 100)}%`
+    }));
+
+    const cheapest = gameInfo.cheapestPriceEver;
+    const cheapestDate = new Date(cheapest.date * 1000)
+      .toISOString()
+      .split("T")[0];
 
     res.json({
-      isFree: parseFloat(bestDeal.price) === 0,
-      price: `$${parseFloat(bestDeal.price).toFixed(2)}`,
-      store: store ? store.storeName : `Loja ${bestDeal.storeID}`
+      isFree: parseFloat(offers[0].currentPrice) === 0,
+      offers,
+      lowestHistoricalPrice: {
+        price: parseFloat(cheapest.price),
+        date: cheapestDate
+      }
     });
   } catch (err) {
     console.error("Erro ao buscar preço:", err.message);

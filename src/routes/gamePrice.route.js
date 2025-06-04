@@ -31,10 +31,17 @@ router.get("/", async (req, res) => {
     return res.status(400).json({ error: "Nome do jogo não fornecido" });
   }
 
+  // Limpeza do nome no backend
+  const cleanedName = name
+    .toLowerCase()
+    .replace(/[^a-z0-9 ]/gi, "")
+    .replace(/\s+/g, " ")
+    .trim();
+
   try {
     const searchRes = await axios.get("https://www.cheapshark.com/api/1.0/games", {
       params: {
-        title: name,
+        title: cleanedName,
         limit: 1
       }
     });

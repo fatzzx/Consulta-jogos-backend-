@@ -8,7 +8,8 @@ vi.mock('../src/models/User.js', () => ({
   }
 }));
 
-vi.mock('bcryptjs', async () => {
+// Mock correto com named exports (para funcionar com "import { compare, hash }")
+vi.mock('bcryptjs', () => {
   return {
     compare: vi.fn(),
     hash: vi.fn()
@@ -16,7 +17,7 @@ vi.mock('bcryptjs', async () => {
 });
 
 import * as userService from '../src/services/user.service.js';
-import { compare, hash } from 'bcryptjs';
+import { compare, hash } from 'bcryptjs'; // Agora funciona corretamente com o mock acima
 
 describe('User Service (teste simplificado)', () => {
   beforeEach(() => {

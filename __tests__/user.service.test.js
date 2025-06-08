@@ -1,7 +1,6 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import User from '../src/models/User.js';
 
-
 vi.mock('../src/models/User.js', () => ({
   default: {
     findOne: vi.fn(),
@@ -9,8 +8,7 @@ vi.mock('../src/models/User.js', () => ({
   }
 }));
 
-
-vi.mock('bcryptjs', () => ({
+vi.mock('bcryptjs', async () => ({
   compare: vi.fn(),
   hash: vi.fn()
 }));

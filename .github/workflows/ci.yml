@@ -3,6 +3,8 @@ name: CI - Testes Automatizados
 on:
   push:
     branches: [main, dev]
+    tags:
+      - 'v*'  # executa CI em tags como v1.0.0, v2.3.1 etc
   pull_request:
     branches: [main, dev]
 
@@ -11,16 +13,16 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Clonar repositório
-      uses: actions/checkout@v3
+      - name: Clonar repositório
+        uses: actions/checkout@v3
 
-    - name: Instalar Node.js
-      uses: actions/setup-node@v3
-      with:
-        node-version: 18
+      - name: Instalar Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
 
-    - name: Instalar dependências
-      run: npm install
+      - name: Instalar dependências
+        run: npm install
 
-    - name: Rodar testes
-      run: npm test
+      - name: Rodar testes
+        run: npm test

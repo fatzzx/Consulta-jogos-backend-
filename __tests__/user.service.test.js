@@ -8,13 +8,15 @@ vi.mock('../src/models/User.js', () => ({
   }
 }));
 
-vi.mock('bcryptjs', async () => ({
-  compare: vi.fn(),
-  hash: vi.fn()
-}));
+vi.mock('bcryptjs', async () => {
+  return {
+    compare: vi.fn(),
+    hash: vi.fn()
+  };
+});
 
 import * as userService from '../src/services/user.service.js';
-import * as bcrypt from 'bcryptjs';
+import { compare, hash } from 'bcryptjs';
 
 describe('User Service (teste simplificado)', () => {
   beforeEach(() => {
@@ -23,7 +25,7 @@ describe('User Service (teste simplificado)', () => {
 
   it('deve registrar um usuário novo (simplificado)', async () => {
     User.findOne.mockResolvedValue(null);
-    bcrypt.hash.mockResolvedValue('senhaHasheada');
+    hash.mockResolvedValue('senhaHasheada');
 
     User.create.mockResolvedValue({
       _id: '1',
@@ -51,7 +53,7 @@ describe('User Service (teste simplificado)', () => {
       password: 'senhaHasheada'
     });
 
-    bcrypt.compare.mockResolvedValue(false);
+    compare.mockResolvedValue(false);
 
     await expect(userService.loginUser({
       email: 'joao@example.com',

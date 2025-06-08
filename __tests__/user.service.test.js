@@ -1,14 +1,12 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import User from '../src/models/User.js';
 
-
 vi.mock('../src/models/User.js', () => ({
   default: {
     findOne: vi.fn(),
     create: vi.fn()
   }
 }));
-
 
 vi.mock('bcryptjs', async () => {
   const actual = await vi.importActual('bcryptjs');
@@ -46,7 +44,7 @@ describe('User Service (teste simplificado)', () => {
 
     expect(User.findOne).toHaveBeenCalledWith({ email: 'joao@example.com' });
     expect(User.create).toHaveBeenCalled();
-    expect(result.name).toBe('João');
+    expect(result.name).toBe('João'); //  Correto agora
   });
 
   it('não deve autenticar o usuário com senha incorreta', async () => {
